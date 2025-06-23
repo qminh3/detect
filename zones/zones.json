@@ -1,0 +1,20 @@
+{
+  "zones": [
+    {
+      "name": "DANGEROUS ZONE",
+      "type": "rectangle",
+      "coordinates": [
+        250,
+        230,
+        1429,
+        670
+      ]
+      
+      
+    }
+    
+    
+    
+
+  ]
+}
