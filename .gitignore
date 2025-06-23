@@ -1,0 +1,12 @@
+# Bỏ qua các tệp nhật ký (.log)
+*.log
+
+# Bỏ qua thư mục node_modules (dành cho các dự án Node.js)
+node_modules/
+
+# Bỏ qua các thư mục môi trường ảo của Python
+venv/
+.venv/
+
+# Bỏ qua thư mục chứa các tệp biên dịch Python
+__pycache__/

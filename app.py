@@ -1,5 +1,4 @@
 import cv2
-import sys
 import os
 import time
 import logging
@@ -14,7 +13,6 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
-
 
 class VideoZoneTracker:
     def __init__(self, model_path: str, zones_file: str,
@@ -102,7 +100,7 @@ class VideoZoneTracker:
 
         frame_idx = 0
         detect_frame_interval = int(fps * self.detection_interval_seconds)
-        next_detect_frame = 0  # NEW: detect ngay frame 0, tiếp theo frame 90, 180...
+        next_detect_frame = 0  # Detect ngay frame 0, tiếp theo frame 90, 180...
 
         while True:
             start_time = time.time()
@@ -117,6 +115,7 @@ class VideoZoneTracker:
                 detections = self.detector.get_detections(results)
                 self.last_detections = self.scale_detections(detections, scale_x, scale_y)
 
+                # Cập nhật tracking
                 dets = [[d['bbox'], d['confidence'], d['class_id']] for d in self.last_detections]
                 tracks = self.tracker.update_tracks(dets, frame=frame)
 
@@ -157,7 +156,7 @@ class VideoZoneTracker:
             if show_preview:
                 cv2.imshow("Tracking", display_frame)
 
-            # NEW: chính xác FPS thực
+            # Giới hạn FPS thực tế
             elapsed = time.time() - start_time
             remaining = max(0, (1.0 / fps) - elapsed)
             if remaining > 0:
@@ -176,6 +175,7 @@ class VideoZoneTracker:
             cv2.destroyAllWindows()
 
         logger.info(f"✅ Finished processing {frame_idx} frames.")
+
     def run_image(self, image_path, output_path='output_image.jpg', show_preview=True):
         if not os.path.exists(image_path):
             raise FileNotFoundError(f"Image not found: {image_path}")
@@ -227,12 +227,10 @@ class VideoZoneTracker:
             cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    # video_path = r"C:\Users\admin\OneDrive\Pictures\6.mp4"
     model_path = "yolov8n.pt"
     zones_path = "zones/zones.json"
     output_path = "output1.mp4"
 
     tracker = VideoZoneTracker(model_path, zones_path)
-    # tracker.run(video_path, output_path)
-    image_path = r"C:\Users\admin\OneDrive\Pictures\2.jpg"
+    image_path = r"E:\Code\detect\test\test1.jpg"
     tracker.run_image(image_path, output_path='output_image.jpg')
